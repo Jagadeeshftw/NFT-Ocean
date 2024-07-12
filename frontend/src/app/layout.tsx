@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +19,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-white dark:bg-gray-900">
-        <ThirdwebProvider>{children}</ThirdwebProvider>
+      <body className="">
+        <NextThemesProvider attribute="class" defaultTheme="light">
+          <ThirdwebProvider>{children}</ThirdwebProvider>
+        </NextThemesProvider>
       </body>
     </html>
   );
