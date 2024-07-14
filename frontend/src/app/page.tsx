@@ -1,13 +1,10 @@
 "use client";
-
-import Navbar from "@/components/Navbar";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
       <AuroraBackground className="min-h-screen">
         <motion.div
           initial={{ opacity: 0.0, y: 40 }}
