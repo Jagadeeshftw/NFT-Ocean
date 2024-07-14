@@ -5,5 +5,138 @@
 :root {
 }
 
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+.navbar.initial {
+  background-color: transparent;
+}
+.navbar.scrolled {
+  background-color: white;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  max-width: 500px;
+  padding: 42px 32px;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 30px;
+  border: 2px solid #f8f9fd;
+  background: #fff;
+  transition: 1s all;
+  text-decoration: none;
+}
+.title {
+  color: #9333ea;
+  text-align: center;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 35.196px;
+  transition: 0.4s all;
+}
+.subtitle {
+  color: #7e8882;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  transition: 0.4s all;
+}
+.icon-circle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #9333ea;
+}
+.card:hover {
+  background: #9333ea;
+  transition: 0.4s all;
+}
+.card:hover .title,
+.card:hover .subtitle {
+  color: #fff;
+  transition: 0.4s all;
+}
+.btnRound {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  padding: 6px 28px;
+  border-radius: 100px;
+  border: 1px solid #9333ea;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+.btnRound:hover {
+  box-shadow: 0px 6px 10px 0px rgba(148, 0, 211, 0.2);
+  transition: all 0.2s ease;
+}
+.btnService {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custum-file-upload {
+  height: 200px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+  gap: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #cacaca;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
+}
+
+.custum-file-upload .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .icon svg {
+  height: 80px;
+  fill: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload .text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custum-file-upload .text span {
+  font-weight: 400;
+  color: rgba(75, 85, 99, 1);
+}
+
+.custum-file-upload input {
+  display: none;
+}
+
 @layer base {
 }
