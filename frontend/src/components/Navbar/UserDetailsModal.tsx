@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -5,25 +6,42 @@ import { cn } from "@/lib/utils";
 
 type UserDetailsModalProps = {
   isOpen: boolean;
+  address: string;
   onSubmit: (details: { name: string; email: string }) => void;
 };
 
 const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   isOpen,
+  address,
   onSubmit,
 }) => {
   if (!isOpen) return null;
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const firstName = formData.get("First name") as string;
-    const lastName = formData.get("Last name") as string;
-    const name = firstName + " " + lastName;
+    const name = `${formData.get("firstname")} ${formData.get("lastname")}`;
     const email = formData.get("email") as string;
-    console.log("name is", name);
-    console.log("email is", email);
-    onSubmit({ name, email });
+    console.log("the address inside the modal: ", address);
+    const userDetails = { address, name, email };
+    try {
+      const response = await fetch("/api/storeUserData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userDetails),
+      });
+
+      if (response.ok) {
+        console.log("User data stored successfully");
+        onSubmit();
+      } else {
+        console.error("Failed to store user data");
+      }
+    } catch (error) {
+      console.error("Error storing user data:", error);
+    }
   };
 
   return (
@@ -43,16 +61,31 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
           <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
             <LabelInputContainer>
               <Label htmlFor="firstname">First name</Label>
-              <Input id="firstname" placeholder="Tyler" type="text" />
+              <Input
+                id="firstname"
+                name="firstname"
+                placeholder="Tyler"
+                type="text"
+              />
             </LabelInputContainer>
             <LabelInputContainer>
               <Label htmlFor="lastname">Last name</Label>
-              <Input id="lastname" placeholder="Durden" type="text" />
+              <Input
+                id="lastname"
+                name="lastname"
+                placeholder="Durden"
+                type="text"
+              />
             </LabelInputContainer>
           </div>
           <LabelInputContainer className="mb-4">
             <Label htmlFor="email">Email Address</Label>
-            <Input id="email" placeholder="projectmayhem@fc.com" type="email" />
+            <Input
+              id="email"
+              name="email"
+              placeholder="projectmayhem@fc.com"
+              type="email"
+            />
           </LabelInputContainer>
 
           <button
