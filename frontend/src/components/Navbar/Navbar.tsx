@@ -7,6 +7,7 @@ import { MdOutlineExplore } from "react-icons/md";
 import { client } from "@/app/client";
 import { ConnectButton, lightTheme } from "thirdweb/react";
 import UserDetailsModal from "./UserDetailsModal";
+const ethers = require("ethers");
 
 const customTheme = lightTheme({
   colors: {
@@ -22,22 +23,52 @@ const Navbar = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
+  const [address, setAddress] = useState("");
 
-  const handleModalSubmit = (details: any) => {
-    setUserDetails(details);
+  const handleModalSubmit = () => {
     setIsModalOpen(false);
-    console.log("User Details:", details);
-    // Here you can send the details to your backend or process them as needed
   };
 
   const handleConnect = () => {
-    console.log(isConnected);
-    console.log(isModalOpen);
-    if (!isConnected) {
-      setIsModalOpen(true);
-      setIsConnected(true);
-      localStorage.setItem("isConnected", "true");
-    }
+    const checkAddressInDatabase = async (userAddress: string) => {
+      try {
+        const response = await fetch(
+          `/api/checkAddress?address=${userAddress}`
+        );
+        const result = await response.json();
+        return result.exists; // Assuming the API returns { exists: boolean }
+      } catch (error) {
+        console.error("Error checking address in the database:", error);
+        return false;
+      }
+    };
+
+    const checkUserExistence = async (userAddress: string) => {
+      // Check if the address exists in the database
+      const addressExists = await checkAddressInDatabase(userAddress);
+      console.log("addressExists:", addressExists);
+      // Open the modal only if the address is not in the database
+      if (!addressExists) {
+        setIsModalOpen(true);
+      }
+    };
+
+    const initProvider = async () => {
+      let signer: any = null;
+
+      let provider;
+      if (window.ethereum == null) {
+        console.log("MetaMask not installed; using read-only defaults");
+        provider = ethers.getDefaultProvider();
+      } else {
+        provider = new ethers.BrowserProvider(window.ethereum);
+
+        signer = await provider.getSigner();
+        setAddress(signer.address);
+        checkUserExistence(signer.address);
+      }
+    };
+    initProvider();
   };
 
   useEffect(() => {
@@ -155,6 +186,7 @@ const Navbar = () => {
             </div>
             <UserDetailsModal
               isOpen={isModalOpen}
+              address={address}
               onSubmit={handleModalSubmit}
             />
           </div>
