@@ -27,7 +27,7 @@ export default function Form() {
     };
 
     console.log("Form data:", data); // Added for debugging
-    const jsonString = JSON.stringify(data);
+    const jsonString = JSON.parse(JSON.stringify(data));
     uploadJson(jsonString);
   };
 
