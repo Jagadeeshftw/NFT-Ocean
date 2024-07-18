@@ -1,6 +1,8 @@
 "use client";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
+import Footer from "@/components/Footer";
+import GridBox from "@/components/GridBox";
 
 export default function Home() {
   return (
@@ -54,7 +56,10 @@ export default function Home() {
         </motion.div>
       </AuroraBackground>
 
-      <div className="min-h-screen bg-secondary"></div>
+      <div className="min-h-screen bg-slate-50 py-10">
+        <GridBox />
+      </div>
+      <Footer />
     </>
   );
 }
