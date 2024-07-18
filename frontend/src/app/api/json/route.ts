@@ -3,11 +3,7 @@ import { NextResponse, NextRequest } from "next/server";
 const pinataSDK = require("@pinata/sdk");
 const pinata = new pinataSDK({ pinataJWTKey: process.env.PINATA_JWT });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {
