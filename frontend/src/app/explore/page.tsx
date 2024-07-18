@@ -5,6 +5,7 @@ import React from "react";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { FaSellsy } from "react-icons/fa";
 import { BsListNested } from "react-icons/bs";
+import Footer from "@/components/Footer";
 
 const page = () => {
   return (
@@ -27,7 +28,7 @@ const page = () => {
           </div>
         </div>
       </BackgroundContainer>
-      <div className="pt-6 min-h-screen sm:pt-16 flex flex-wrap justify-center align-center gap-y-4 gap-x-6 bg-slate-50">
+      <div className="py-6 min-h-screen sm:py-16 flex flex-wrap justify-center align-center gap-y-16 gap-x-6 bg-slate-50">
         <ExploreCard
           title="Create an NFT"
           description="Unleash your creativity and mint your unique digital art on our platform. Start your journey as an NFT artist today!"
@@ -47,6 +48,7 @@ const page = () => {
           href=""
         />
       </div>
+      <Footer />
     </>
   );
 };
