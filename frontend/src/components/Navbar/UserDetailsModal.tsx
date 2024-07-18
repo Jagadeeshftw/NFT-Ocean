@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 type UserDetailsModalProps = {
   isOpen: boolean;
   address: string;
-  onSubmit: (details: { name: string; email: string }) => void;
+  onSubmit: () => void;
 };
 
 const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
