@@ -7,6 +7,7 @@ import { MdOutlineExplore } from "react-icons/md";
 import { client } from "@/app/client";
 import { ConnectButton, lightTheme } from "thirdweb/react";
 import UserDetailsModal from "./UserDetailsModal";
+import { MdOutlineDashboardCustomize } from "react-icons/md";
 const ethers = require("ethers");
 
 const customTheme = lightTheme({
@@ -17,12 +18,7 @@ const customTheme = lightTheme({
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [isConnected, setIsConnected] = useState(
-    typeof window !== "undefined" &&
-      localStorage.getItem("isConnected") === "true"
-  );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userDetails, setUserDetails] = useState(null);
   const [address, setAddress] = useState("");
 
   const handleModalSubmit = () => {
@@ -155,18 +151,13 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link
-                      href="/sellNFT"
+                      href="/dashboard"
                       className="block md:px-4 transition hover:text-primary"
                     >
-                      <span>Sell NFT</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/myNFT"
-                      className="block md:px-4 transition hover:text-primary"
-                    >
-                      <span>My NFTs</span>
+                      <span className="flex gap-2">
+                        <MdOutlineDashboardCustomize className="mt-1" />
+                        Dashboard
+                      </span>
                     </Link>
                   </li>
                 </ul>
