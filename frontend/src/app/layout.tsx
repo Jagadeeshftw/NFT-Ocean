@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import "ag-grid-community/styles/ag-grid.css";
+// Core CSS
+import "ag-grid-community/styles/ag-theme-quartz.css";
 import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import Navbar from "@/components/Navbar/Navbar";
-
-const inter = Inter({ subsets: ["latin"] });
+import { SidebarProvider } from "./dashboard/context/SidebarContext";
 
 export const metadata: Metadata = {
   title: "NFT Ocean",
@@ -22,8 +22,7 @@ export default function RootLayout({
       <body className="">
         <NextThemesProvider attribute="class" defaultTheme="light">
           <ThirdwebProvider>
-            <Navbar />
-            {children}
+            <SidebarProvider>{children}</SidebarProvider>
           </ThirdwebProvider>
         </NextThemesProvider>
       </body>
