@@ -6,10 +6,12 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import { FaSellsy } from "react-icons/fa";
 import { BsListNested } from "react-icons/bs";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar/Navbar";
 
 const page = () => {
   return (
     <>
+      <Navbar />
       <BackgroundContainer>
         <div className="relative pt-16 sm:pt-36 ml-auto">
           <div className="lg:w-2/3 text-center mx-auto">
