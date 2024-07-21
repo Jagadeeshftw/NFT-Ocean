@@ -3,10 +3,12 @@ import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
 import Footer from "@/components/Footer";
 import GridBox from "@/components/GridBox";
+import Navbar from "@/components/Navbar/Navbar";
 
 export default function Home() {
   return (
     <>
+      <Navbar />
       <AuroraBackground className="min-h-screen">
         <motion.div
           initial={{ opacity: 0.0, y: 40 }}
