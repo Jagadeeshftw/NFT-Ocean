@@ -12,6 +12,8 @@ import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
 const ethers = require("ethers");
 import { AiOutlineShopping } from "react-icons/ai";
+import { useStateContext } from "@/app/dashboard/context/CartContext";
+import Cart from "./Cart";
 
 const customTheme = lightTheme({
   colors: {
@@ -21,7 +23,7 @@ const customTheme = lightTheme({
 
 function DashboardNavbar() {
   const { toggleSidebar } = useContext(SidebarContext);
-
+  const { showCart, setShowCart, totalQuantities } = useStateContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [address, setAddress] = useState("");
 
@@ -126,7 +128,7 @@ function DashboardNavbar() {
             onClick={() => setShowCart(true)}
           >
             <AiOutlineShopping />
-            <span className="cart-item-qty">0</span>
+            <span className="cart-item-qty">{totalQuantities}</span>
           </button>
         </ul>
       </div>
@@ -135,6 +137,7 @@ function DashboardNavbar() {
         address={address}
         onSubmit={handleModalSubmit}
       />
+      {showCart && <Cart />}
     </header>
   );
 }
