@@ -43,12 +43,14 @@ function SidebarContent() {
         ))}
       </ul>
       <div className="px-6 my-6">
-        <button className="px-6 py-2 bg-primary text-white rounded-lg font-bold transform hover:-translate-y-1 transition duration-400">
+        <Link
+        href="/dashboard/create"
+        className="px-6 py-2 bg-primary text-white rounded-lg font-bold transform hover:-translate-y-1 transition duration-400">
           Create NFT
           <span className="ml-2" aria-hidden="true">
             +
           </span>
-        </button>
+        </Link>
       </div>
     </div>
   );
