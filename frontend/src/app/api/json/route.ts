@@ -7,22 +7,11 @@ export const runtime = "nodejs";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = {
-      message: "Pinatas are awesome",
-    };
-    const data1 = {
-      name: "hllhh",
-      desc: "jjhkl",
-      image:
-        "https://jade-above-owl-453.mypinata.cloud/ipfs/QmPdVbCydUxi6aeJJsLcSZtkoEuFuSDRfhVWCpAYMc5P8L",
-      price: "43",
-    };
-
     const data = await request.json();
     console.log(data);
     const options = {
       pinataMetadata: {
-        name: "MyCustomName",
+        name: "JsonData",
         keyvalues: {
           customKey: "customValue",
           customKey2: "customValue2",
@@ -33,10 +22,6 @@ export async function POST(request: NextRequest) {
       },
     };
     const res = await pinata.pinJSONToIPFS(data, options);
-    console.log(res);
-    // const { IpfsHash } = await res.json();
-    // console.log(IpfsHash);
-
     return NextResponse.json({ res }, { status: 200 });
   } catch (e) {
     console.log(e);
