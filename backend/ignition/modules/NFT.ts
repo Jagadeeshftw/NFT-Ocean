@@ -4,7 +4,7 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 const NFTModule = buildModule("NFTModule", (m) => {
 
 
-  const nft = m.contract("NFT",["0x63F912e7e803f58b5C38D4Ca172e4CfF400Bf437"]);
+  const nft = m.contract("NFT",["0x0FCC61C8e67E8E6290E0B24e38f2ed3887e3e88B"]);
 
   return { nft };
 });
