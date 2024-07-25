@@ -1,34 +1,62 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-export default function Form() {
-  const [selectedImage, setSelectedImage] = useState<
-    string | ArrayBuffer | null
-  >(null);
+import { initProvider } from "@/lib";
+import { ethers } from "ethers";
 
+type FormData = {
+  name: string;
+  desc: string;
+  price: string;
+  image?: string;
+};
+
+export default function Form() {
+  const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
   const [cidForImage, setCidForImage] = useState("");
   const [cidForData, setCidForData] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [formData, setFormData] = useState<FormData | null>(null);
 
   const inputFile = useRef(null);
 
+  useEffect(() => {
+    if (cidForImage && formData) {
+      handleSubmitWithCid(cidForImage, formData);
+    }
+  }, [cidForImage, formData]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setUploading(true);
     const formData = new FormData(e.currentTarget);
-    const data = {
+    const data: FormData = {
       name: formData.get("name") as string,
       desc: formData.get("desc") as string,
-      image:
-        `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cidForImage}` as string,
       price: formData.get("price") as string,
     };
 
+    setFormData(data); // Store form data in state
+
+    if (!cidForImage) {
+      console.log("Timeout called");
+    } else {
+      handleSubmitWithCid(cidForImage, data);
+    }
+  };
+
+  const handleSubmitWithCid = (cid: string, data: FormData) => {
+    console.log("Checking CID:", cid); // Added for debugging
+    data.image = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}` as string;
     console.log("Form data:", data); // Added for debugging
-    const jsonString = JSON.parse(JSON.stringify(data));
-    uploadJson(jsonString);
+    const jsonString = JSON.stringify(data);
+    console.log(jsonString);
+    uploadJson(jsonString, data);
+    setUploading(false);
+    setFormData(null);
   };
 
   const handleDelete = async () => {
@@ -58,29 +86,51 @@ export default function Form() {
       });
 
       const resData = await res.json();
-      console.log(resData);
-
+      console.log("Response Data:", resData); // Added for debugging
       setCidForImage(resData.IpfsHash);
     }
   };
-
-  const uploadJson = async (jsonString: string) => {
+  const uploadJson = async (jsonString: string,  data: FormData) => {
     try {
-      setUploading(true);
-
       const res = await fetch("/api/json", {
         method: "POST",
         body: jsonString,
       });
       const resData = await res.json();
-      setCidForData(resData.IpfsHash);
-      setUploading(false);
+      console.log("JSON Upload Response Data:", resData); // Added for debugging
+      setCidForData(resData.res.IpfsHash);
+      const hash = resData.res.IpfsHash;
+      console.log("the hash is", hash);
+            const tokenURI = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${hash}` as string;
+      console.log("the tokenURI is",tokenURI)
+      try {
+        const { nft, marketplace, signer, provider } = await initProvider();
+  
+        let transaction = await nft.createToken(tokenURI);
+        await transaction.wait();
+        let tokenId=await nft.getTokenIDByURI(tokenURI);
+        const price=ethers.parseUnits(data.price,'ether');
+        let listingPrice=await marketplace.getListingPrice()
+        listingPrice=listingPrice.toString()
+        console.log('the tokenid ;', tokenId);
+        console.log('the ls ;', listingPrice);
+        transaction=await marketplace.createMarketItem(nft.getAddress(),tokenId,price,{value: listingPrice})
+        await transaction.wait()
+
+        // const datas = await marketplace.fetchItemsCreated()
+        // console.log("the data is: ",datas);
+        // const items = await Promise.all(datas.map(async i => {
+        //     console.log("the value i is :", i)
+        // }))
+      } catch (error) {
+        console.error("Error initializing configuration:", error);
+      }
     } catch (e) {
       console.log(e);
-      setUploading(false);
       alert("Trouble uploading file");
     }
   };
+
   const deleteFile = async (cid: string) => {
     try {
       const res = await fetch(`/api/files?cid=${cid}`, {
@@ -107,28 +157,16 @@ export default function Form() {
             Create New NFT
           </h2>
           <p className="text-neutral-600 text-center text-xl mt-4 mb-6 dark:text-neutral-300">
-            Start your journey in the NFT space by creating your unique digital
-            asset.
+            Start your journey in the NFT space by creating your unique digital asset.
           </p>
         </div>
         <div className="max-w-2xl w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
           <form className="my-8" onSubmit={handleSubmit}>
-            <label
-              className="custum-file-upload mb-4 w-full mx-auto"
-              htmlFor="file"
-            >
+            <label className="custum-file-upload mb-4 w-full mx-auto" htmlFor="file">
               <div className="icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill=""
-                  viewBox="0 0 24 24"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
                   <g strokeWidth="0" id="SVGRepo_bgCarrier"></g>
-                  <g
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                    id="SVGRepo_tracerCarrier"
-                  ></g>
+                  <g strokeLinejoin="round" strokeLinecap="round" id="SVGRepo_tracerCarrier"></g>
                   <g id="SVGRepo_iconCarrier">
                     {" "}
                     <path
@@ -143,56 +181,30 @@ export default function Form() {
               <div className="text">
                 <span>Click to upload image</span>
               </div>
-              <input
-                type="file"
-                id="file"
-                onChange={handleImageChange}
-                ref={inputFile}
-              />
+              <input type="file" id="file" onChange={handleImageChange} ref={inputFile} />
             </label>
 
             {selectedImage && (
               <>
                 <Label htmlFor="image">Preview</Label>
                 <div className="mb-4 mt-2">
-                  <Image
-                    id="image"
-                    src={selectedImage as string}
-                    alt="Selected"
-                    width={250}
-                    height={250}
-                  />
+                  <Image id="image" src={selectedImage as string} alt="Selected" width={250} height={250} />
                 </div>
               </>
             )}
 
             <LabelInputContainer className="mb-4">
               <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                placeholder="Cartoon Network"
-                type="text"
-                name="name"
-              />
+              <Input id="name" placeholder="Cartoon Network" type="text" name="name" />
             </LabelInputContainer>
 
             <LabelInputContainer className="mb-4">
               <Label htmlFor="desc">Description</Label>
-              <Input
-                id="desc"
-                placeholder="Enter description"
-                type="text"
-                name="desc"
-              />
+              <Input id="desc" placeholder="Enter description" type="text" name="desc" />
             </LabelInputContainer>
             <LabelInputContainer className="mb-8">
               <Label htmlFor="price">Price</Label>
-              <Input
-                id="price"
-                placeholder="0.001 ETH"
-                type="text"
-                name="price"
-              />
+              <Input id="price" placeholder="0.001 ETH" type="text" name="price" />
             </LabelInputContainer>
 
             <button
