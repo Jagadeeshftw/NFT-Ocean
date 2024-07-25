@@ -48,7 +48,7 @@ describe("NFTMarketPlace", function () {
       await nft.createToken(tokenURI);
       const tokenId = (await nft.getTokenIDByURI(tokenURI)).toString();
       const price = ethers.parseUnits("0.0001", "ether");
-      const listingPrice = ethers.parseUnits("10000", "wei");
+      const listingPrice = ethers.parseUnits("0.2", "ether");
       // Create the market item and verify the argument values in an event.
       await expect(
         marketPlace.createMarketItem(nft.getAddress(), tokenId, price, {
