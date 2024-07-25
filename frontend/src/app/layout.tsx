@@ -6,6 +6,7 @@ import "./globals.css";
 import { ThirdwebProvider } from "thirdweb/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { SidebarProvider } from "./dashboard/context/SidebarContext";
+import { StateContext } from "./dashboard/context/CartContext";
 
 export const metadata: Metadata = {
   title: "NFT Ocean",
@@ -22,7 +23,11 @@ export default function RootLayout({
       <body className="">
         <NextThemesProvider attribute="class" defaultTheme="light">
           <ThirdwebProvider>
-            <SidebarProvider>{children}</SidebarProvider>
+            <SidebarProvider>
+            <StateContext>
+              {children}
+              </StateContext>
+              </SidebarProvider>
           </ThirdwebProvider>
         </NextThemesProvider>
       </body>
