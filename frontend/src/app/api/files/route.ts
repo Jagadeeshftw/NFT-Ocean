@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     const data = await request.formData();
     const file: File | null = data.get("file") as unknown as File;
     data.append("file", file);
-    data.append("pinataMetadata", JSON.stringify({ name: "File to upload" }));
+    data.append("pinataMetadata", JSON.stringify({ name: "Image" }));
     const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
       method: "POST",
       headers: {
