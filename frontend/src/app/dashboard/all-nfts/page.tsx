@@ -1,41 +1,53 @@
+"use client"
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-const page = () => {
-  const products = [
-    {
-      id: 1,
-      image:
-        "https://cdn.sanity.io/images/vfxfwnaw/production/9c6162564225f2fd12c9abd439ce80e5df0986d4-800x800.webp",
-      name: "Speaker",
-      price: "56",
-    },
-    {
-      id: 2,
-      image:
-        "https://cdn.sanity.io/images/vfxfwnaw/production/9c6162564225f2fd12c9abd439ce80e5df0986d4-800x800.webp",
-      name: "Speaker2",
-      price: "56",
-    },
-    {
-      id: 3,
-      image:
-        "https://cdn.sanity.io/images/vfxfwnaw/production/9c6162564225f2fd12c9abd439ce80e5df0986d4-800x800.webp",
-      name: "Speaker3",
-      price: "56",
-    },
-  ];
+import { initProvider } from "@/lib";
+import { sign } from "crypto";
+import { SigningKey } from "ethers";
+type Item = {
+  price: string;
+  tokenId: string;
+  seller: string;
+  owner: string;
+  sold: boolean;
+  image: string;
+  name: string;
+  desc: string;
+};
+const Page = () => {
+     const [items, setItems] = useState<Item[]>([]);
+
+    useEffect(() => {
+      initConfig();
+    },[]);
+    const initConfig = async () => {
+      try {
+        const { AllItemsCreated , signer} = await initProvider();
+        console.log(signer)
+
+        setItems(AllItemsCreated);
+        
+      } catch (error) {
+        console.error("Error initializing configuration:", error);
+
+      }
+
+      console.log(items);
+    };
+
+   
 
   return (
     <div>
       <div className="products-heading">
-        <h2>Best Seller Products</h2>
-        <p>speaker There are many variations passages</p>
+        <h2>Discover All Unique Digital Art</h2>
+        <p>Explore and own exclusive NFTs created by talented artists from around the world.</p>
       </div>
 
       <div className="products-container">
-        {products?.map((product) => (
-          <div key={product.id}>
+        {items?.map((product) => (
+          <div key={product.tokenId}>
             <Link href={`/dashboard/all-nfts/${product.name}`}>
               <div className="product-card">
                 <Image
@@ -46,7 +58,7 @@ const page = () => {
                   alt="image"
                 />
                 <p className="product-name">{product.name}</p>
-                <p className="product-price">${product.price}</p>
+                <p className="product-price">{product.price} MATIC</p>
               </div>
             </Link>
           </div>
@@ -56,4 +68,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
