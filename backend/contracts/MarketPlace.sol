@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.6;
+pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./utils/Counters.sol";
@@ -12,7 +12,7 @@ contract MarketPlace is ReentrancyGuard {
     Counters.Counter private _itemsSold;
 
     address payable public owner;
-    uint256 public listingPrice = 10000 wei;
+    uint256 public listingPrice = 200000000000000000; // 0.2 Matic in Wei
 
     constructor() {
         owner = payable(msg.sender);
