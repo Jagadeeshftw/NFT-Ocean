@@ -1,98 +1,104 @@
-import React from "react";
-import {
-  AiFillStar,
-  AiOutlineMinus,
-  AiOutlinePlus,
-  AiOutlineStar,
-} from "react-icons/ai";
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useStateContext } from "../../context/CartContext";
+import { initProvider } from "@/lib";
 
-const products = [
-  {
-    id: 1,
-    image: "https://chatgpt.com/api/content/file-BLi2fySuZdmEpaSgUKBqXrGg",
-    name: "Speaker",
-    price: "56",
-  },
-  {
-    id: 2,
-    image:
-      "https://cdn.sanity.io/images/vfxfwnaw/production/9c6162564225f2fd12c9abd439ce80e5df0986d4-800x800.webp",
-    name: "Speaker2",
-    price: "56",
-  },
-  {
-    id: 3,
-    image:
-      "https://cdn.sanity.io/images/vfxfwnaw/production/9c6162564225f2fd12c9abd439ce80e5df0986d4-800x800.webp",
-    name: "Speaker3",
-    price: "56",
-  },
-];
+import { usePathname } from "next/navigation";
+import toast from "react-hot-toast";
+type Item = {
+  price: string;
+  tokenId: string;
+  seller: string;
+  owner: string;
+  sold: boolean;
+  image: string;
+  name: string;
+  desc: string;
+};
+
 
 const Page = () => {
+
+  const pathname = usePathname();
+
+  // Function to extract the desired part from the URL path
+  const extractNameFromPath = (path: string) => {
+    const parts = path.split("/");
+    return decodeURIComponent(parts[parts.length - 1]);
+  };
+  const handleBuyNow = async () => {
+
+    const { signer } = await initProvider();
+    const signerAddress = signer.address;
+
+    // Check if the item.seller address is equal to the signer address
+    if (mainItem.seller === signerAddress) {
+      toast.error("You can't buy items that you created.");
+      return;
+    }
+
+    onAdd(mainItem);
+    setShowCart(true);
+  }
+
+  const itemName = extractNameFromPath(pathname);
+  const [items, setItems] = useState<Item[]>([]);
+  const [mainItem, setMainItem] = useState<Item>();
+  const { onAdd, setShowCart } = useStateContext();
+  useEffect(() => {
+    initConfig();
+  },[]);
+  const initConfig = async () => {
+    try {
+      const { AllItemsCreated } = await initProvider();
+      // Find the item that matches the itemName
+      const value: Item | undefined = AllItemsCreated.find(item => item.name === itemName);
+      if (value) {
+        setMainItem(value);
+      }
+      setItems(AllItemsCreated);
+      
+    } catch (error) {
+      console.error("Error initializing configuration:", error);
+
+    }
+
+    console.log(items);
+  };
   return (
     <div>
       <div className="product-detail-container">
         <div>
           <div className="image-container">
-            <Image
-              src={products[0].image}
+            <img
+              src={mainItem?.image}
               className="product-detail-image"
               alt=""
             />
           </div>
-          <div className="small-images-container">
-            {products[0].image?.map((item, i) => (
-              <Image
-                key={i}
-                src={urlFor(item)}
-                className={
-                  i === index ? "small-image selected-image" : "small-image"
-                }
-                onMouseEnter={() => setIndex(i)}
-              />
-            ))}
-          </div>
+
         </div>
 
         <div className="product-detail-desc">
-          <h1>{products[0].name}</h1>
-          <div className="reviews">
-            <div>
-              <AiFillStar />
-              <AiFillStar />
-              <AiFillStar />
-              <AiFillStar />
-              <AiOutlineStar />
-            </div>
-            <p>(20)</p>
-          </div>
-          <h4>Details: </h4>
-          <p>hello this is the details of the project</p>
-          <p className="price">${products[0].price}</p>
-          <div className="quantity">
-            <h3>Quantity:</h3>
-            <p className="quantity-desc">
-              <span className="minus" onClick={decQty}>
-                <AiOutlineMinus />
-              </span>
-              <span className="num">{qty}</span>
-              <span className="plus" onClick={incQty}>
-                <AiOutlinePlus />
-              </span>
-            </p>
-          </div>
+          <h1 className="font-bold text-3xl">{mainItem?.name}</h1>
+          <h4 className="font-semibold">Seller Account: </h4>
+          <p>{mainItem?.seller}</p>
+
+          <h4 className="font-semibold">Description: </h4>
+          <p>{mainItem?.desc}</p>
+          <p className="price">{mainItem?.price} MATIC</p>
+
           <div className="buttons">
             <button
               type="button"
               className="add-to-cart"
-              onClick={() => onAdd(products[0], qty)}
+              onClick={() => onAdd(mainItem)}
             >
               Add to Cart
             </button>
-            <button type="button" className="buy-now" onClick={handleBuyNow}>
+            <button type="button" className="buy-now" onClick={handleBuyNow} >
               Buy Now
             </button>
           </div>
@@ -100,11 +106,11 @@ const Page = () => {
       </div>
 
       <div className="maylike-products-wrapper">
-        <h2>You may also like</h2>
+        <h2 className="font-bold">You may also like</h2>
         <div className="marquee">
           <div className="maylike-products-container track">
-            {products?.map((product) => (
-              <div key={product.id}>
+            {items?.map((product) => (
+              <div key={product.tokenId}>
                 <Link href={`/dashboard/all-nfts/${product.name}`}>
                   <div className="product-card">
                     <Image
