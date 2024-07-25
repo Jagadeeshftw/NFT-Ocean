@@ -5,7 +5,7 @@ import { Suspense, useContext, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import DashboardNavbar from "@/components/Dashboard/DashboardNavbar";
 import ThemedSuspense from "@/components/Dashboard/ThemedSuspense";
-
+import { Toaster } from 'react-hot-toast';
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="">
+      <Toaster />
         <div
           className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${
             isSidebarOpen && "overflow-hidden"
