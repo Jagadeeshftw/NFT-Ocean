@@ -43,7 +43,7 @@ const page = () => {
           <span dangerouslySetInnerHTML={{ __html: "&RightArrow;" }}></span>
         </span>
       </a>
-      <div className="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 mb-8 sm:grid-cols-2 md:grid-cols-3">
         {items.map((item) => (
           <div key={item.title} className="plan-card xs:mx-auto  ">
             <h2>
