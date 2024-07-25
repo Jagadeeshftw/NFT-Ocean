@@ -8,7 +8,8 @@ import { client } from "@/app/client";
 import { ConnectButton, lightTheme } from "thirdweb/react";
 import UserDetailsModal from "./UserDetailsModal";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
-const ethers = require("ethers");
+import { initProvider } from "@/lib";
+
 
 const customTheme = lightTheme({
   colors: {
@@ -49,22 +50,14 @@ const Navbar = () => {
       }
     };
 
-    const initProvider = async () => {
-      let signer: any = null;
-
-      let provider;
-      if (window.ethereum == null) {
-        console.log("MetaMask not installed; using read-only defaults");
-        provider = ethers.getDefaultProvider();
-      } else {
-        provider = new ethers.BrowserProvider(window.ethereum);
-
-        signer = await provider.getSigner();
+    const initConfig = async () => {
+        const {signer, provider} = await initProvider();
         setAddress(signer.address);
         checkUserExistence(signer.address);
       }
-    };
-    initProvider();
+      initConfig();
+
+
   };
 
   useEffect(() => {
@@ -185,6 +178,7 @@ const Navbar = () => {
       </nav>
     </header>
   );
-};
+}
+
 
 export default Navbar;
