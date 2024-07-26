@@ -34,12 +34,16 @@ const Page = () => {
     const signerAddress = signer.address;
 
     // Check if the item.seller address is equal to the signer address
-    if (mainItem.seller === signerAddress) {
+
+    if (mainItem && mainItem.seller === signerAddress) {
       toast.error("You can't buy items that you created.");
       return;
     }
-
-    onAdd(mainItem);
+    if(mainItem)
+    {
+      onAdd(mainItem);
+    }
+    
     setShowCart(true);
   }
 
@@ -94,7 +98,7 @@ const Page = () => {
             <button
               type="button"
               className="add-to-cart"
-              onClick={() => onAdd(mainItem)}
+              onClick={() => {if(mainItem){onAdd(mainItem)}}}
             >
               Add to Cart
             </button>
