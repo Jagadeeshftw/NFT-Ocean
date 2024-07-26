@@ -1,5 +1,6 @@
 "use client";
 import { initProvider } from "@/lib";
+import { allUsers } from "@/lib/formactions";
 // Theme
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
@@ -16,7 +17,13 @@ interface IRow {
   soldNftCount: number; // New field for number of sold NFTs
   ownedNftCount: number; // New field for number of owned NFTs
 }
+interface userType {
+  id: number;
+  address: string;
+  name: string;
+  email: string;
 
+}
 type Item = {
   price: string;
   tokenId: string;
@@ -35,13 +42,7 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch users from the API
-        const res = await fetch("/api/users");
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const users = await res.json();
-
+        const users = await allUsers();
         // Fetch all items created
         const { AllItemsCreated } = await initProvider();
 
@@ -67,7 +68,7 @@ const Page = () => {
         });
 
         // Add nftCreated, soldNftCount, and ownedNftCount fields to each user
-        const updatedUsers = users.map((user: IRow) => ({
+        const updatedUsers = users.map((user: userType) => ({
           ...user,
           nftCreated: nftCountMap[user.address]?.created || 0,
           soldNftCount: nftCountMap[user.address]?.sold || 0,
