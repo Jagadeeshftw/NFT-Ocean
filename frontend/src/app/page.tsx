@@ -6,6 +6,7 @@ import GridBox from "@/components/GridBox";
 import Navbar from "@/components/Navbar/Navbar";
 
 export default function Home() {
+
   return (
     <>
       <Navbar />
