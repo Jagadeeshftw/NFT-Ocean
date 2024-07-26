@@ -93,8 +93,7 @@ function DashboardNavbar() {
             <Input
               className="pl-8 text-gray-700 bg-slate-50 p-2 border-faded-100 rounded-sm"
               placeholder="Search for NFTs"
-              aria-label="Search"
-            />
+              aria-label="Search" crossOrigin={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} css={undefined}            />
           </div>
         </div>
         <ul className="flex items-center flex-shrink-0 space-x-6">

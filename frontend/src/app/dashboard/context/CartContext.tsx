@@ -70,7 +70,7 @@ export const StateContext = ({ children }: StateContextProps) => {
     const newCartItems = cartItems.filter((item) => item.tokenId !== product.tokenId);
 
     if (foundProduct) {
-      setTotalPrice((prevTotalPrice) => prevTotalPrice - parseFloat(foundProduct.price));
+      setTotalPrice((prevTotalPrice) => prevTotalPrice - parseFloat(foundProduct!.price));
       setTotalQuantities(prevTotalQuantities => prevTotalQuantities - 1);
       setCartItems(newCartItems);
     }
