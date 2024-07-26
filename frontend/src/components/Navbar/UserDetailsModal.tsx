@@ -1,13 +1,14 @@
-"use client";
 import React from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
+import prisma from "@/lib/db";
+import {createUser} from "@/lib/formactions";
 
 type UserDetailsModalProps = {
-  isOpen: boolean;
+  isOpen?: boolean;
   address: string;
-  onSubmit: () => void;
+  onSubmit?: () => void;
 };
 
 const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
@@ -20,28 +21,9 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const name = `${formData.get("firstname")} ${formData.get("lastname")}`;
-    const email = formData.get("email") as string;
-    console.log("the address inside the modal: ", address);
-    const userDetails = { address, name, email };
-    try {
-      const response = await fetch("/api/storeUserData", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userDetails),
-      });
-
-      if (response.ok) {
-        console.log("User data stored successfully");
-        onSubmit();
-      } else {
-        console.error("Failed to store user data");
-      }
-    } catch (error) {
-      console.error("Error storing user data:", error);
-    }
+    await createUser({formData, address});
+    if(onSubmit)
+    onSubmit();
   };
 
   return (
