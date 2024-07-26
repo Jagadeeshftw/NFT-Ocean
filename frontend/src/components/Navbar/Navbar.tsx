@@ -9,6 +9,7 @@ import { ConnectButton, lightTheme } from "thirdweb/react";
 import UserDetailsModal from "./UserDetailsModal";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { initProvider } from "@/lib";
+import { isUser } from "@/lib/formactions";
 
 
 const customTheme = lightTheme({
@@ -27,22 +28,9 @@ const Navbar = () => {
   };
 
   const handleConnect = () => {
-    const checkAddressInDatabase = async (userAddress: string) => {
-      try {
-        const response = await fetch(
-          `/api/checkAddress?address=${userAddress}`
-        );
-        const result = await response.json();
-        return result.exists; // Assuming the API returns { exists: boolean }
-      } catch (error) {
-        console.error("Error checking address in the database:", error);
-        return false;
-      }
-    };
-
     const checkUserExistence = async (userAddress: string) => {
       // Check if the address exists in the database
-      const addressExists = await checkAddressInDatabase(userAddress);
+      const addressExists = await isUser(userAddress);
       console.log("addressExists:", addressExists);
       // Open the modal only if the address is not in the database
       if (!addressExists) {
@@ -51,12 +39,11 @@ const Navbar = () => {
     };
 
     const initConfig = async () => {
-        const {signer, provider} = await initProvider();
+        const {signer} = await initProvider();
         setAddress(signer.address);
         checkUserExistence(signer.address);
       }
       initConfig();
-
 
   };
 

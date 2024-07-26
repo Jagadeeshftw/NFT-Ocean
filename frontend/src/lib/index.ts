@@ -27,7 +27,7 @@ export const initProvider = async () => {
 
   const userItems = await marketplace.fetchItemsCreated()
 
-  const ItemsCreatedByUser = await Promise.all(userItems.map(async i => {
+  const ItemsCreatedByUser = await Promise.all(userItems.map(async (i: any[]) => {
       
 
       const tokenURI = await nft.tokenURI(i[2]);
@@ -48,7 +48,7 @@ export const initProvider = async () => {
 
   const allItems = await marketplace.fetchMarketItems()
 
-  const AllItemsCreated = await Promise.all(allItems.map(async i => {
+  const AllItemsCreated = await Promise.all(allItems.map(async (i: any[]) => {
       
 
       const tokenURI = await nft.tokenURI(i[2]);
@@ -69,7 +69,7 @@ export const initProvider = async () => {
 
   const myNFTs = await marketplace.fetchMyNFTs()
 
-  const OwnedNFTs = await Promise.all(myNFTs.map(async i => {
+  const OwnedNFTs = await Promise.all(myNFTs.map(async (i: any[]) => {
       
 
       const tokenURI = await nft.tokenURI(i[2]);
