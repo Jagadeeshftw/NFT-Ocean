@@ -12,7 +12,7 @@ contract MarketPlace is ReentrancyGuard {
     Counters.Counter private _itemsSold;
 
     address payable public owner;
-    uint256 public listingPrice = 200000000000000000; // 0.2 Matic in Wei
+    uint256 public listingPrice = 2000000000000000; // 0.002 Matic in Wei
 
     constructor() {
         owner = payable(msg.sender);
@@ -40,11 +40,25 @@ contract MarketPlace is ReentrancyGuard {
         bool sold
     );
 
+    event SaleDebug(uint256 msgValue, uint256 price, string message);
+    event ListingPriceUpdated(uint256 oldPrice, uint256 newPrice);
+
     /**
      * @dev Returns the listing price set by the contract owner.
      */
     function getListingPrice() public view returns (uint256) {
         return listingPrice;
+    }
+
+    /**
+     * @dev Updates the listing price. Can only be called by the owner.
+     * @param newPrice The new listing price in Wei.
+     */
+    function setListingPrice(uint256 newPrice) public {
+        require(msg.sender == owner, "Only the owner can update the listing price");
+        uint256 oldPrice = listingPrice;
+        listingPrice = newPrice;
+        emit ListingPriceUpdated(oldPrice, newPrice);
     }
 
     /**
@@ -100,6 +114,9 @@ contract MarketPlace is ReentrancyGuard {
         uint256 tokenId = idToMarketItem[itemId].tokenId;
 
         require(msg.value == price, "Please submit the asking price to complete the purchase");
+
+        // Emit debug event
+        emit SaleDebug(msg.value, price, "Checking price match");
 
         idToMarketItem[itemId].seller.transfer(msg.value);
         IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
