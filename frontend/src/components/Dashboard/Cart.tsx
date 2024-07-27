@@ -5,8 +5,11 @@ import toast from 'react-hot-toast';
 import { useStateContext } from '@/app/dashboard/context/CartContext';
 import { initProvider } from '@/lib';
 import { ethers } from 'ethers';
+import { useRouter } from 'next/navigation';
 
 const Cart = () => {
+
+  const router = useRouter(); // Initialize useRouter
   const { totalPrice, totalQuantities, cartItems, setCartItems, setTotalPrice, setTotalQuantities, setShowCart, onRemove } = useStateContext();
 
   const handlePayment = async () => {
@@ -33,6 +36,7 @@ const Cart = () => {
       setTotalPrice(0);
       setTotalQuantities(0);
       setShowCart(false);
+      router.push("/dashboard/my-nfts");
   
     } catch (error) {
       console.error("Payment failed:", error);
