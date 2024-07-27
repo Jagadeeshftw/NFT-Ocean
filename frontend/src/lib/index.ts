@@ -18,8 +18,11 @@ export const initProvider = async () => {
     signer = await provider.getSigner();
   }
 
-  const marketplaceAddress = "0x0FCC61C8e67E8E6290E0B24e38f2ed3887e3e88B";
-  const nftAddress = "0xaD7d3B9dFd2Ef425F16a2f595d2dB9F7C641FeBd";
+  // const marketplaceAddress = "0x0FCC61C8e67E8E6290E0B24e38f2ed3887e3e88B";
+  // const nftAddress = "0xaD7d3B9dFd2Ef425F16a2f595d2dB9F7C641FeBd";
+
+  const marketplaceAddress = "0xbF9A3A851262cb030a9919C53cD8be03AB0E805C";
+  const nftAddress = "0x1B3D91DBEd0E928c3160Ec2a4f2F5fcBC243Ec3b";
 
 
   const nft = new Contract(nftAddress, NFT.abi, signer);
@@ -48,7 +51,7 @@ export const initProvider = async () => {
 
   const allItems = await marketplace.fetchMarketItems()
 
-  const AllItemsCreated = await Promise.all(allItems.map(async (i: any[]) => {
+  const AllUnsoldItems = await Promise.all(allItems.map(async (i: any[]) => {
       
 
       const tokenURI = await nft.tokenURI(i[2]);
@@ -88,7 +91,28 @@ export const initProvider = async () => {
       return item;
   }))
 
-  return { nftAddress, nft, marketplace, signer, provider, ItemsCreatedByUser, AllItemsCreated, OwnedNFTs };
+  const allNFTs = await marketplace.fetchAllItems()
+
+  const allItemsCreated = await Promise.all(allNFTs.map(async (i: any[]) => {
+      
+
+      const tokenURI = await nft.tokenURI(i[2]);
+      const meta = await axios.get(tokenURI);
+      let price = ethers.formatUnits(i[5].toString(), 'ether')
+      let item = {
+        price,
+        tokenId: i[2],
+        seller: i[3],
+        owner: i[4],
+        sold: i[6],
+        image: meta.data.image,
+        name: meta.data.name,
+        desc: meta.data.desc,
+      }
+      return item;
+  }))
+
+  return { nftAddress, nft, marketplace, signer, provider, ItemsCreatedByUser, AllUnsoldItems, allItemsCreated, OwnedNFTs };
 
 
 };
