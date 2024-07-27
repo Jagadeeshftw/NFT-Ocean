@@ -80,12 +80,13 @@ To deploy the project, follow these steps:
     npm start
     ```
 
-### Configuration
+### Tech Stack
 
-Ensure you configure your environment variables in a `.env` file in the root directory. The following variables are required:
-
-- `NEXT_PUBLIC_INFURA_PROJECT_ID`: Your Infura project ID for connecting to the Ethereum network.
-- `NEXT_PUBLIC_CONTRACT_ADDRESS`: The address of your deployed NFT contract.
+- **Frontend:** React, Next.js, Tailwind CSS
+- **Backend:** Node.js, Express
+- **Blockchain:** Solidity, Hardhat
+- **Database:** PostgreSQL, Prisma
+- **Authentication:** MetaMask
 
 ## Usage
 
