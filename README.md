@@ -85,7 +85,7 @@ To deploy the project, follow these steps:
 - **Frontend:** React, Next.js, Tailwind CSS
 - **Backend:** Node.js, Express
 - **Blockchain:** Solidity, Hardhat
-- **Database:** PostgreSQL, Prisma
+- **Database:** IPFS, PostgreSQL, Prisma
 - **Authentication:** MetaMask
 
 ## Usage
