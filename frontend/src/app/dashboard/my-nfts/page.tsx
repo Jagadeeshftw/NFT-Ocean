@@ -32,8 +32,6 @@ const Page = () => {
         console.error("Error initializing configuration:", error);
 
       }
-
-      console.log(items);
     };
 
    

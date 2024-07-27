@@ -44,11 +44,11 @@ const Page = () => {
       try {
         const users = await allUsers();
         // Fetch all items created
-        const { AllItemsCreated } = await initProvider();
+        const { allItemsCreated } = await initProvider();
 
         // Create a map to count NFTs created, sold, and owned by each address
         const nftCountMap: { [address: string]: { created: number, sold: number, owned: number } } = {};
-        AllItemsCreated.forEach((item: Item) => {
+        allItemsCreated.forEach((item: Item) => {
           // Count created NFTs
           if (!nftCountMap[item.seller]) {
             nftCountMap[item.seller] = { created: 0, sold: 0, owned: 0 };

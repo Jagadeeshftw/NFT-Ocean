@@ -2,9 +2,7 @@ import React, { useContext, useState } from "react";
 import { SidebarContext } from "@/app/dashboard/context/SidebarContext";
 import { CiSearch } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { MdSunny } from "react-icons/md";
-import { FaMoon, FaBell } from "react-icons/fa";
-import { Avatar, Input, WindmillContext } from "@windmill/react-ui";
+import {Input} from "@windmill/react-ui";
 import { ConnectButton, lightTheme } from "thirdweb/react";
 import { client } from "@/app/client";
 import UserDetailsModal from "../Navbar/UserDetailsModal";
@@ -14,6 +12,7 @@ const ethers = require("ethers");
 import { AiOutlineShopping } from "react-icons/ai";
 import { useStateContext } from "@/app/dashboard/context/CartContext";
 import Cart from "./Cart";
+import { isUser } from "@/lib/formactions";
 
 const customTheme = lightTheme({
   colors: {
@@ -32,23 +31,10 @@ function DashboardNavbar() {
   };
 
   const handleConnect = () => {
-    const checkAddressInDatabase = async (userAddress: string) => {
-      try {
-        const response = await fetch(
-          `/api/checkAddress?address=${userAddress}`
-        );
-        const result = await response.json();
-        return result.exists; // Assuming the API returns { exists: boolean }
-      } catch (error) {
-        console.error("Error checking address in the database:", error);
-        return false;
-      }
-    };
 
     const checkUserExistence = async (userAddress: string) => {
       // Check if the address exists in the database
-      const addressExists = await checkAddressInDatabase(userAddress);
-      console.log("addressExists:", addressExists);
+      const addressExists = await isUser(userAddress);
       // Open the modal only if the address is not in the database
       if (!addressExists) {
         setIsModalOpen(true);

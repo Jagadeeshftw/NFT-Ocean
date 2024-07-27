@@ -11,10 +11,14 @@ const Cart = () => {
 
   const handlePayment = async () => {
     try {
-      const { nftAddress, marketplace } = await initProvider();
-  
+      const { nftAddress, marketplace, allItemsCreated } = await initProvider();
+
+      console.log("all items", allItemsCreated )
+      console.log(cartItems);
       for (const item of cartItems) {
         const priceInBigNumber = ethers.parseUnits(item.price, 'ether'); // Convert to BigNumber
+        console.log(item.price);
+        console.log(priceInBigNumber);
         await marketplace.createMarketSale(
           nftAddress,
           item.tokenId,

@@ -1,13 +1,8 @@
 "use client";
 import React from "react";
 import routes from "./Routes";
-// import * as Icons from "../../icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// function Icon({ icon, ...props }) {
-//   const Icon = Icons[icon];
-//   return <Icon {...props} />;
-// }
 
 function SidebarContent() {
   const path = usePathname();

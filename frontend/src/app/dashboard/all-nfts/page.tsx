@@ -23,17 +23,15 @@ const Page = () => {
     },[]);
     const initConfig = async () => {
       try {
-        const { AllItemsCreated , signer} = await initProvider();
-        console.log(signer)
+        const { AllUnsoldItems , signer} = await initProvider();
 
-        setItems(AllItemsCreated);
+        setItems(AllUnsoldItems);
         
       } catch (error) {
         console.error("Error initializing configuration:", error);
 
       }
 
-      console.log(items);
     };
 
    

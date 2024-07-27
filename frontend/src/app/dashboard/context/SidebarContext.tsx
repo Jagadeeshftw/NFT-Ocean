@@ -18,12 +18,10 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   function toggleSidebar() {
-    console.log("toggle sidebar called");
     setIsSidebarOpen(!isSidebarOpen);
   }
 
   function closeSidebar() {
-    console.log("close side bar is called");
     setIsSidebarOpen(false);
   }
 

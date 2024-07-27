@@ -13,7 +13,6 @@ export default function RootLayout({
 }>) {
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   const pathname = usePathname();
-  console.log("isSidebarOpen in layout", isSidebarOpen);
   useEffect(() => {
     closeSidebar();
   }, [pathname]);

@@ -8,7 +8,6 @@ export const runtime = "nodejs";
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
-    console.log(data);
     const options = {
       pinataMetadata: {
         name: "JsonData",

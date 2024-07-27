@@ -25,7 +25,6 @@ const Page = () => {
   const initConfig = async () => {
     try {
       const { ItemsCreatedByUser } = await initProvider();
-      console.log(ItemsCreatedByUser);
       // Find the items that are sold
       const soldItems: Item[] = ItemsCreatedByUser.filter((item: Item) => item.sold === true);
       setItems(soldItems);

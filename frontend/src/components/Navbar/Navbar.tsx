@@ -31,7 +31,6 @@ const Navbar = () => {
     const checkUserExistence = async (userAddress: string) => {
       // Check if the address exists in the database
       const addressExists = await isUser(userAddress);
-      console.log("addressExists:", addressExists);
       // Open the modal only if the address is not in the database
       if (!addressExists) {
         setIsModalOpen(true);

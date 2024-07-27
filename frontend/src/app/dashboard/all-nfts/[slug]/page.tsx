@@ -56,20 +56,19 @@ const Page = () => {
   },[]);
   const initConfig = async () => {
     try {
-      const { AllItemsCreated } = await initProvider();
+      const { AllUnsoldItems } = await initProvider();
       // Find the item that matches the itemName
-      const value: Item | undefined = AllItemsCreated.find(item => item.name === itemName);
+      const value: Item | undefined = AllUnsoldItems.find(item => item.name === itemName);
       if (value) {
         setMainItem(value);
       }
-      setItems(AllItemsCreated);
+      setItems(AllUnsoldItems);
       
     } catch (error) {
       console.error("Error initializing configuration:", error);
 
     }
 
-    console.log(items);
   };
   return (
     <div>

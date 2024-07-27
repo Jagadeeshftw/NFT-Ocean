@@ -41,19 +41,14 @@ export default function Form() {
 
     setFormData(data); // Store form data in state
 
-    if (!cidForImage) {
-      console.log("Timeout called");
-    } else {
+    if (cidForImage) {
       handleSubmitWithCid(cidForImage, data);
     }
   };
 
   const handleSubmitWithCid = (cid: string, data: FormData) => {
-    console.log("Checking CID:", cid); // Added for debugging
     data.image = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}` as string;
-    console.log("Form data:", data); // Added for debugging
     const jsonString = JSON.stringify(data);
-    console.log(jsonString);
     uploadJson(jsonString, data);
     setUploading(false);
     setFormData(null);
@@ -86,7 +81,6 @@ export default function Form() {
       });
 
       const resData = await res.json();
-      console.log("Response Data:", resData); // Added for debugging
       setCidForImage(resData.IpfsHash);
     }
   };
@@ -97,14 +91,11 @@ export default function Form() {
         body: jsonString,
       });
       const resData = await res.json();
-      console.log("JSON Upload Response Data:", resData); // Added for debugging
       setCidForData(resData.res.IpfsHash);
       const hash = resData.res.IpfsHash;
-      console.log("the hash is", hash);
             const tokenURI = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${hash}` as string;
-      console.log("the tokenURI is",tokenURI)
       try {
-        const { nft, marketplace, signer, provider } = await initProvider();
+        const { nft, marketplace } = await initProvider();
   
         let transaction = await nft.createToken(tokenURI);
         await transaction.wait();
@@ -112,16 +103,8 @@ export default function Form() {
         const price=ethers.parseUnits(data.price,'ether');
         let listingPrice=await marketplace.getListingPrice()
         listingPrice=listingPrice.toString()
-        console.log('the tokenid ;', tokenId);
-        console.log('the ls ;', listingPrice);
         transaction=await marketplace.createMarketItem(nft.getAddress(),tokenId,price,{value: listingPrice})
         await transaction.wait()
-
-        // const datas = await marketplace.fetchItemsCreated()
-        // console.log("the data is: ",datas);
-        // const items = await Promise.all(datas.map(async i => {
-        //     console.log("the value i is :", i)
-        // }))
       } catch (error) {
         console.error("Error initializing configuration:", error);
       }
