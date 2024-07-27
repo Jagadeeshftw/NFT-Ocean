@@ -21,8 +21,8 @@ export const initProvider = async () => {
   // const marketplaceAddress = "0x0FCC61C8e67E8E6290E0B24e38f2ed3887e3e88B";
   // const nftAddress = "0xaD7d3B9dFd2Ef425F16a2f595d2dB9F7C641FeBd";
 
-  const marketplaceAddress = "0xbF9A3A851262cb030a9919C53cD8be03AB0E805C";
-  const nftAddress = "0x1B3D91DBEd0E928c3160Ec2a4f2F5fcBC243Ec3b";
+  const marketplaceAddress = "0x972C9B2292A41c511016Ec7e589ecca3b199BdF6";
+  const nftAddress = "0x68dD14cc4090DFF593DC8Ff43dc9Ade74dA16f11";
 
 
   const nft = new Contract(nftAddress, NFT.abi, signer);
