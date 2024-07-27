@@ -188,4 +188,23 @@ contract MarketPlace is ReentrancyGuard {
 
         return items;
     }
+
+    /**
+     * @dev Fetches all market items (both sold and unsold).
+     * @return An array of all market items.
+     */
+    function fetchAllItems() public view returns (MarketItem[] memory) {
+        uint256 totalItemCount = _itemIds.current();
+        MarketItem[] memory items = new MarketItem[](totalItemCount);
+        uint256 currentIndex = 0;
+
+        for (uint256 i = 0; i < totalItemCount; i++) {
+            uint256 currentId = idToMarketItem[i + 1].itemId;
+            MarketItem storage currentItem = idToMarketItem[currentId];
+            items[currentIndex] = currentItem;
+            currentIndex += 1;
+        }
+
+        return items;
+    }
 }
