@@ -29,14 +29,34 @@ Before you begin, ensure you have the following:
     git clone https://github.com/Jagadeeshftw/NFT-Ocean.git
     cd NFT-Ocean
     ```
+2. **Create .env.local file with below variables under ./frontend**
 
-2. **Install dependencies:**
+    ```bash
+    # The client ID for the template service(Thirdweb) used in your application.
+    NEXT_PUBLIC_TEMPLATE_CLIENT_ID="<client_id>"
+    # The JSON Web Token (JWT) for authenticating with the Pinata API.
+    PINATA_JWT="<your_pinata_jwt>"
+    # The URL of the IPFS gateway used to access files stored on IPFS.
+    NEXT_PUBLIC_GATEWAY_URL="https://gateway.pinata.cloud/ipfs/"
+    # The hostname of the IPFS gateway used to access files stored on IPFS.
+    NEXT_PUBLIC_GATEWAY_HOSTNAME="gateway.pinata.cloud"
+    # The connection URL for your PostgreSQL database.
+    POSTGRES_URL="postgres://<username>:<password>@<host>:<port>/<database>"
+    # The connection URL specifically for Prisma to interact with your PostgreSQL database.
+    POSTGRES_PRISMA_URL="postgres://<username>:<password>@<host>:<port>/<database>"
+    # The connection URL for your PostgreSQL database without SSL.
+    POSTGRES_URL_NO_SSL="postgres://<username>:<password>@<host>:<port>/<database>"
+    # The connection URL for your PostgreSQL database without connection pooling.
+    POSTGRES_URL_NON_POOLING="postgres://<username>:<password>@<host>:<port>/<database>"
+    ```
+
+3. **Install dependencies:**
 
     ```bash
     npm install
     ```
 
-3. **Start the development server:**
+4. **Start the development server:**
 
     ```bash
     npm run dev
