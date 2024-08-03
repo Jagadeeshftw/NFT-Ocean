@@ -82,7 +82,7 @@ To deploy the project, follow these steps:
 
 ### Tech Stack
 
-- **Frontend:** React, Next.js, Tailwind CSS
+- **Frontend:** React, Next.js, Typescript, Tailwind CSS
 - **Backend:** Node.js, Express
 - **Blockchain:** Solidity, Hardhat
 - **Database:** IPFS, PostgreSQL, Prisma
