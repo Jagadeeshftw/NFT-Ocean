@@ -92,7 +92,7 @@ To deploy the project, follow these steps:
 
 ### Minting an NFT
 
-1. Navigate to the **Create NFT** section in the user dashboard.
+1. Navigate to the user dashboard's **Create NFT** section.
 2. Upload your digital art, fill in the details (name, description, price), and mint your NFT.
 3. Your NFT will be listed for sale in the marketplace once the transaction is confirmed.
 
@@ -113,7 +113,7 @@ We welcome contributions from the community! To contribute, follow these steps:
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the MIT License. Please take a look at the [LICENSE](LICENSE) file for more details.
 
 ## Acknowledgements
 
